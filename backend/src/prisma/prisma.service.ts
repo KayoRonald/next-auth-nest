@@ -1,12 +1,29 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable, OnModuleInit, OnModuleDestroy, INestApplication } from '@nestjs/common';
+import { Prisma, PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PrismaService
-  extends PrismaClient
-  implements OnModuleInit, OnModuleDestroy
+  extends PrismaClient<
+    Prisma.PrismaClientOptions,
+    'query' | 'info' | 'warn' | 'error' | 'beforeExit'
+  >
+  implements OnModuleInit
 {
+  private static instance: PrismaService;
+
+  constructor() {
+    super();
+  }
+
+  static getInstance(): PrismaService {
+    if (!PrismaService.instance) {
+      PrismaService.instance = new PrismaService();
+      PrismaService.instance.$connect();
+    }
+    return PrismaService.instance;
+  }
+
   async onModuleInit() {
     await this.$connect();
     this.$use(async (params, next) => {
@@ -28,7 +45,12 @@ export class PrismaService
       return next(params);
     });
   }
-  async onModuleDestroy() {
-    await this.$disconnect();
+  // async onModuleDestroy() {
+  //   await this.$disconnect();
+  // }
+  async enableShutdownHooks(app: INestApplication) {
+    this.$on('beforeExit', async () => {
+      await app.close();
+    });
   }
 }

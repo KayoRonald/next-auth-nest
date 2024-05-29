@@ -16,10 +16,32 @@ import {
 import { GetServerSideProps } from 'next';
 import { parseCookies, setCookie } from 'nookies';
 import { PasswordField } from '@/component/PassworldField';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import useAuth from '@/hooks/useAuth';
 
+type Inputs = {
+  email: string
+  password: string
+}
 
 export default function Login() {
-  const bgImg = `linear-gradient(to bottom, rgb(0 0 0),#0a0a0a6e,rgb(0 0 0)), url("https://raw.githubusercontent.com/FelipePDS/otakinho-store/master/assets/images/bgBoku.jpg") top left / cover`
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>()
+  const { signIn } = useAuth();
+  async function onSubmitHandler(data: Inputs){
+    try {
+      await signIn(data)
+    } catch (error:any) {
+      console.error(error.response?.data)
+    }
+  }
+
+  console.log(watch("email")) // watch input value by passing the name of it
+
   return (
     <>
       <Head>
@@ -39,6 +61,9 @@ export default function Login() {
             </Stack>
           </Stack>
           <Box
+          as={"form"}
+          method='POST'
+          onSubmit={handleSubmit(onSubmitHandler)}
             py={{ base: '0', sm: '8' }}
             px={{ base: '4', sm: '10' }}
             // bg={{ base: 'transparent', sm: 'bg-surface' }}
@@ -50,9 +75,9 @@ export default function Login() {
               <Stack spacing="5">
                 <FormControl>
                   <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input id="email" type="email" />
+                  <Input {...register("email")} type="email" />
                 </FormControl>
-                <PasswordField />
+                <PasswordField {...register("password")}/>
               </Stack>
               <HStack justify="space-between">
                 <Checkbox defaultChecked>Remember me</Checkbox>
@@ -64,7 +89,7 @@ export default function Login() {
                 <Button variant="primary" bg={'blue.600'}>Sign in</Button>
                 <HStack spacing="1" justify="center">
                   <Text color="muted">Não tem uma conta?</Text>
-                  <Button variant="link" colorScheme="blue">
+                  <Button variant="link" colorScheme="blue" type='submit'>
                     registrar
                   </Button>
                 </HStack>

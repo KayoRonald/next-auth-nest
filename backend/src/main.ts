@@ -8,7 +8,7 @@ import { validationPipe } from './config/validation.pipe';
 
 async function bootstrap() {
   const logger = new Logger('Main');
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const config = app.get<ConfigService>(ConfigService);
   const port = config.get<number>('port');
   const document = SwaggerModule.createDocument(app, swaggerConfig);
