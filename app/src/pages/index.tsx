@@ -1,4 +1,3 @@
-import withSSRAuth from "@/utils/withSSRAuth";
 import {
   Container,
   Stack,
@@ -9,13 +8,15 @@ import {
   Center,
   Button,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
 import Typewriter from "typewriter-effect";
+import withSSRAuth from "@/utils/withSSRAuth";
+import useAuth from "@/hooks/useAuth";
+import Layout from "@/layout/Layout";
 
 export default function HomeHero() {
+  const { signOut } = useAuth();
   return (
-    <>
+    <Layout>
       <Container maxW={"7xl"} id="intro">
         <Stack
           align={"center"}
@@ -69,9 +70,10 @@ export default function HomeHero() {
                 px={6}
                 colorScheme={"red"}
                 bg={"red.400"}
+                onClick={signOut}
                 _hover={{ bg: "red.500" }}
               >
-                Get started
+                logout
               </Button>
               <Button rounded={"full"} size={"lg"} fontWeight={"normal"} px={6}>
                 How It Works
@@ -96,7 +98,7 @@ export default function HomeHero() {
           </Flex>
         </Stack>
       </Container>
-    </>
+    </Layout>
   );
 }
 

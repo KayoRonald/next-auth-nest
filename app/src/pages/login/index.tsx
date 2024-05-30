@@ -1,46 +1,45 @@
-import Head from 'next/head'
+import Head from "next/head";
 import {
-  Box,
   Button,
   Checkbox,
-  Container,
-  Divider,
+  Flex,
   FormControl,
   FormLabel,
-  Heading,
-  HStack,
   Input,
-  Stack,
   Text,
-} from '@chakra-ui/react'
-import { GetServerSideProps } from 'next';
-import { parseCookies, setCookie } from 'nookies';
-import { PasswordField } from '@/component/PassworldField';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import useAuth from '@/hooks/useAuth';
-
-type Inputs = {
-  email: string
-  password: string
-}
+  useToast,
+} from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+import { PasswordField } from "@/component/PassworldField";
+import { useForm } from "react-hook-form";
+import useAuth from "@/hooks/useAuth";
+import { Card } from "@/component/form/card";
+import { ISignInCredentials } from "@/types";
 
 export default function Login() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<ISignInCredentials>();
+
   const { signIn } = useAuth();
-  async function onSubmitHandler(data: Inputs){
+  const toast = useToast();
+  async function onSubmitHandler(data: ISignInCredentials) {
     try {
-      await signIn(data)
-    } catch (error:any) {
-      console.error(error.response?.data)
+      await signIn(data);
+    } catch (error: any) {
+      console.error(error.response?.data);
+      toast({
+        title: "Não foi possível fazer o login",
+        description: "E-mail ou senha inválido",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   }
-
-  console.log(watch("email")) // watch input value by passing the name of it
 
   return (
     <>
@@ -50,72 +49,88 @@ export default function Login() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
-        <Stack spacing="8">
-          <Stack spacing="6">
-            {/* <Logo /> */}
-            <Stack spacing={{ base: '2', md: '3' }} textAlign="center">
-              <Heading size={{ base: 'xs', md: 'sm' }}>
-                Faça login na sua conta
-              </Heading>
-            </Stack>
-          </Stack>
-          <Box
-          as={"form"}
-          method='POST'
-          onSubmit={handleSubmit(onSubmitHandler)}
-            py={{ base: '0', sm: '8' }}
-            px={{ base: '4', sm: '10' }}
-            // bg={{ base: 'transparent', sm: 'bg-surface' }}
-            boxShadow={{ base: 'none', sm: 'md' }}
-            borderRadius={{ base: 'none', sm: 'xl' }}
-            bg='black.300'
+      <Flex w="100%" h="100vh">
+        <Card />
+        <Flex
+          w="100%"
+          align="center"
+          justify="center"
+          direction="column"
+          h="100%"
+          p="1rem"
+        >
+          <Flex
+            as={"form"}
+            method="POST"
+            onSubmit={handleSubmit(onSubmitHandler)}
+            maxW="350px"
+            w="100%"
+            direction="column"
+            gap="1rem"
           >
-            <Stack spacing="6">
-              <Stack spacing="5">
-                <FormControl>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input {...register("email")} type="email" />
-                </FormControl>
-                <PasswordField {...register("password")}/>
-              </Stack>
-              <HStack justify="space-between">
-                <Checkbox defaultChecked>Remember me</Checkbox>
-                <Button variant="link" colorScheme="blue" size="sm">
-                  Forgot password?
-                </Button>
-              </HStack>
-              <Stack spacing="6">
-                <Button variant="primary" bg={'blue.600'}>Sign in</Button>
-                <HStack spacing="1" justify="center">
-                  <Text color="muted">Não tem uma conta?</Text>
-                  <Button variant="link" colorScheme="blue" type='submit'>
-                    registrar
-                  </Button>
-                </HStack>
-              </Stack>
-            </Stack>
-          </Box>
-        </Stack>
-      </Container>
-      <LoginForm />
-    </>
-  )
-}
+            <Text
+              fontWeight={700}
+              fontSize="1.5rem"
+              lineHeight="36px"
+            >
+              Log in
+            </Text>
+            <FormControl>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <Input
+                focusBorderColor="purple.700"
+                borderColor="#7180963e"
+                {...register("email")}
+                type="email"
+                placeholder="E-mail"
+                _placeholder={{ color: "#718096" }}
+                autoFocus
+              />
+            </FormControl>
 
-const LoginForm = () => {
-  return (
-    <>
+            <PasswordField
+              focusBorderColor="purple.700"
+              borderColor="#7180963e"
+              placeholder="senha"
+              {...register("password")}
+            />
+
+            <Flex justify="space-between" fontSize=".875rem">
+              <Checkbox
+                color="#718096"
+                borderColor="#7180963d"
+                colorScheme="purple"
+                outline="none"
+                fontSize=".875rem"
+              >
+                <Text fontSize=".875rem">Lembrar senha</Text>
+              </Checkbox>
+              <Text color="#718096" textDecoration="underline" cursor="pointer">
+                Esqueceu sua senha?
+              </Text>
+            </Flex>
+
+            <Button
+              bg="purple.700"
+              color="white"
+              _hover={{ bg: "purple.500" }}
+              type="submit"
+            >
+              Entrar
+            </Button>
+          </Flex>
+        </Flex>
+      </Flex>
     </>
-  )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
-  if (cookies['backendtoken']) {
+  if (cookies["backendtoken"]) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };
