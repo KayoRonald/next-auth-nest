@@ -1,6 +1,6 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react'
 
-import ButtonToggle from './ButtonToggle';
+import ButtonToggle from './ButtonToggle'
 
 const Header = () => {
   return (
@@ -9,7 +9,7 @@ const Header = () => {
         <ButtonToggle />
       </Box>
     </Flex>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

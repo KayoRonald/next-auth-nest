@@ -1,3 +1,72 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@next/next/recommended",
+    "eslint:recommended",
+    "eslint-config-prettier",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "root": true,
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["unused-imports", "@typescript-eslint"],
+  "parserOptions": {
+    "allowImportExportEverywhere": true,
+    "sourceType": "module",
+    "ecmaVersion": 13,
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "rules": {
+    "comma-dangle": ["warn", "never"],
+    "jsx-quotes": ["warn", "prefer-double"],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "linebreak-style": "off",
+    "no-inner-declarations": "off",
+    "no-redeclare": "off",
+    "no-undef": "off",
+    "no-unused-vars": "warn",
+    "quotes": ["warn", "single"],
+    "react/display-name": "off",
+    "react/no-children-prop": "off",
+    "import/newline-after-import": "error",
+    "no-use-before-define": "warn",
+    "semi": ["warn", "never"],
+    "camelcase": [
+      "off",
+      {
+        "properties": "always"
+      }
+    ],
+    "import/no-anonymous-default-export": [
+      2,
+      {
+        "allowArrowFunction": true
+      }
+    ],
+    "indent": [
+      "off",
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "no-empty": [
+      "warn",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": ["type", "external", "internal"]
+      }
+    ]
+  }
 }

@@ -1,7 +1,7 @@
-import { Chakra } from '@/component/ChakraProvider/Chakra'
 import type { AppProps } from 'next/app'
-import { AuthProvider } from '@/contexts/AuthContext'
 import NextNprogress from 'nextjs-progressbar'
+import { Chakra } from '@/component/ChakraProvider/Chakra'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
           showOnShallow={true}
           options={{ easing: 'ease', speed: 500 }}
         />
-          <Component {...pageProps} />
+        <Component {...pageProps} />
       </Chakra>
     </AuthProvider>
   )

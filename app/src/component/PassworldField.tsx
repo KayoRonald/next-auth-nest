@@ -7,7 +7,7 @@ import {
   InputProps,
   InputRightElement,
   useDisclosure,
-  useMergeRefs,
+  useMergeRefs
 } from '@chakra-ui/react'
 import { forwardRef, useRef } from 'react'
 import { HiEye, HiEyeOff } from 'react-icons/hi'

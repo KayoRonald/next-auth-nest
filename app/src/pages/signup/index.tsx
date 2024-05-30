@@ -1,10 +1,26 @@
 import Head from 'next/head'
 import { Text } from '@chakra-ui/react'
-import { GetServerSideProps } from 'next';
-import { parseCookies } from 'nookies';
-
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
+// import { useForm } from 'react-hook-form'
+// import useAuth from '@/hooks/useAuth'
+// import { ISignUpCredentials } from '@/types'
 
 export default function Signup() {
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   watch,
+  //   formState: { errors }
+  // } = useForm<ISignUpCredentials>()
+  // const { signIn } = useAuth()
+  // async function onSubmitHandler(data: ISignUpCredentials) {
+  //   try {
+  //     await signIn(data)
+  //   } catch (error: any) {
+  //     console.error(error.response?.data)
+  //   }
+  // }
   return (
     <>
       <Head>
@@ -18,18 +34,18 @@ export default function Signup() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = parseCookies(ctx);
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  const cookies = parseCookies(ctx)
   if (cookies['backendtoken']) {
     return {
       redirect: {
         destination: '/',
-        permanent: false,
-      },
-    };
+        permanent: false
+      }
+    }
   }
 
   return {
-    props: {},
-  };
-};
+    props: {}
+  }
+}

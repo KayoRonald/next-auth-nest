@@ -1,7 +1,21 @@
 /* eslint-disable */
-import { Box, Stack, chakra, Text, BoxProps, ButtonGroup, ButtonGroupProps, IconButton, useColorModeValue, HTMLChakraProps, useToken, TextProps, Container } from '@chakra-ui/react'
+import {
+  Box,
+  Stack,
+  chakra,
+  Text,
+  BoxProps,
+  ButtonGroup,
+  ButtonGroupProps,
+  IconButton,
+  useColorModeValue,
+  HTMLChakraProps,
+  useToken,
+  TextProps,
+  Container
+} from '@chakra-ui/react'
 // import { LinkGrids } from './LinkGrids'
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 
 export default function FooterChakra(props: HTMLChakraProps<'svg'>) {
   const [white, black] = useToken('colors', ['white', 'gray.800'])
@@ -25,8 +39,8 @@ export default function FooterChakra(props: HTMLChakraProps<'svg'>) {
         </Stack>
       </Box>
     </Container>
-  );
-};
+  )
+}
 
 const SocialMediaLinks = (props: ButtonGroupProps) => (
   <ButtonGroup variant="ghost" color="gray.600" {...props}>
@@ -34,4 +48,4 @@ const SocialMediaLinks = (props: ButtonGroupProps) => (
     <IconButton as="a" href="#" aria-label="GitHub" icon={<FaGithub fontSize="20px" />} />
     <IconButton as="a" href="#" aria-label="Twitter" icon={<FaTwitter fontSize="20px" />} />
   </ButtonGroup>
-);
+)

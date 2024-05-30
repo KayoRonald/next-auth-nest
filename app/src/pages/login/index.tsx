@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Head from 'next/head'
 import {
   Button,
   Checkbox,
@@ -7,37 +7,33 @@ import {
   FormLabel,
   Input,
   Text,
-  useToast,
-} from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
-import { PasswordField } from "@/component/PassworldField";
-import { useForm } from "react-hook-form";
-import useAuth from "@/hooks/useAuth";
-import { Card } from "@/component/form/card";
-import { ISignInCredentials } from "@/types";
+  useToast
+} from '@chakra-ui/react'
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
+import { useForm } from 'react-hook-form'
+import { PasswordField } from '@/component/PassworldField'
+import useAuth from '@/hooks/useAuth'
+import { Card } from '@/component/form/card'
+import { ISignInCredentials } from '@/types'
 
 export default function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ISignInCredentials>();
+  const { register, handleSubmit } = useForm<ISignInCredentials>()
 
-  const { signIn } = useAuth();
-  const toast = useToast();
+  const { signIn } = useAuth()
+  const toast = useToast()
   async function onSubmitHandler(data: ISignInCredentials) {
     try {
-      await signIn(data);
+      await signIn(data)
     } catch (error: any) {
-      console.error(error.response?.data);
+      console.error(error.response?.data)
       toast({
-        title: "Não foi possível fazer o login",
-        description: "E-mail ou senha inválido",
-        status: "error",
+        title: 'Não foi possível fazer o login',
+        description: 'E-mail ou senha inválido',
+        status: 'error',
         duration: 5000,
-        isClosable: true,
-      });
+        isClosable: true
+      })
     }
   }
 
@@ -51,16 +47,9 @@ export default function Login() {
       </Head>
       <Flex w="100%" h="100vh">
         <Card />
-        <Flex
-          w="100%"
-          align="center"
-          justify="center"
-          direction="column"
-          h="100%"
-          p="1rem"
-        >
+        <Flex w="100%" align="center" justify="center" direction="column" h="100%" p="1rem">
           <Flex
-            as={"form"}
+            as={'form'}
             method="POST"
             onSubmit={handleSubmit(onSubmitHandler)}
             maxW="350px"
@@ -68,11 +57,7 @@ export default function Login() {
             direction="column"
             gap="1rem"
           >
-            <Text
-              fontWeight={700}
-              fontSize="1.5rem"
-              lineHeight="36px"
-            >
+            <Text fontWeight={700} fontSize="1.5rem" lineHeight="36px">
               Log in
             </Text>
             <FormControl>
@@ -80,10 +65,10 @@ export default function Login() {
               <Input
                 focusBorderColor="purple.700"
                 borderColor="#7180963e"
-                {...register("email")}
+                {...register('email')}
                 type="email"
                 placeholder="E-mail"
-                _placeholder={{ color: "#718096" }}
+                _placeholder={{ color: '#718096' }}
                 autoFocus
               />
             </FormControl>
@@ -92,7 +77,7 @@ export default function Login() {
               focusBorderColor="purple.700"
               borderColor="#7180963e"
               placeholder="senha"
-              {...register("password")}
+              {...register('password')}
             />
 
             <Flex justify="space-between" fontSize=".875rem">
@@ -110,33 +95,28 @@ export default function Login() {
               </Text>
             </Flex>
 
-            <Button
-              bg="purple.700"
-              color="white"
-              _hover={{ bg: "purple.500" }}
-              type="submit"
-            >
+            <Button bg="purple.700" color="white" _hover={{ bg: 'purple.500' }} type="submit">
               Entrar
             </Button>
           </Flex>
         </Flex>
       </Flex>
     </>
-  );
+  )
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = parseCookies(ctx);
-  if (cookies["backendtoken"]) {
+  const cookies = parseCookies(ctx)
+  if (cookies['backendtoken']) {
     return {
       redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
+        destination: '/',
+        permanent: false
+      }
+    }
   }
 
   return {
-    props: {},
-  };
-};
+    props: {}
+  }
+}

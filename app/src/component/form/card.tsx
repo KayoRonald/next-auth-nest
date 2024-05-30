@@ -1,9 +1,9 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from '@chakra-ui/react'
 
 export function Card() {
   return (
     <Flex
-      display={["none", "none", "flex"]}
+      display={['none', 'none', 'flex']}
       align="center"
       justify="center"
       direction="column"
@@ -24,5 +24,5 @@ export function Card() {
         </Text>
       </Box>
     </Flex>
-  );
+  )
 }

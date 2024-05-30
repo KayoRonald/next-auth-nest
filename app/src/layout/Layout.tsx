@@ -1,7 +1,7 @@
-import { Box } from "@chakra-ui/react";
-import Header from "./Header";
-import { LayoutProps } from "@/types";
-import FooterChakra from "./Footer";
+import { Box } from '@chakra-ui/react'
+import { LayoutProps } from '@/types'
+import Header from './Header'
+import FooterChakra from './Footer'
 
 const Layout = ({ children }: LayoutProps) => {
   return (
@@ -16,9 +16,9 @@ const Layout = ({ children }: LayoutProps) => {
           </Box>
         </Box>
       </Box>
-      <FooterChakra/>
+      <FooterChakra />
     </>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

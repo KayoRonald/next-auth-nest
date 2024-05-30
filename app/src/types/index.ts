@@ -1,20 +1,20 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 
 export type LayoutProps = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export type ISignUpCredentials = {
-  name: string;
-  username: string;
-  email: string;
-  password: string;
+  name: string
+  username: string
+  email: string
+  password: string
 }
 
-export type ISignInCredentials = Pick<ISignUpCredentials, 'email' | 'password'>;
+export type ISignInCredentials = Pick<ISignUpCredentials, 'email' | 'password'>
 
 export type IAuthContext = {
-  signIn(credentials: ISignInCredentials): Promise<void>;
-  signUp(credentials: ISignUpCredentials): Promise<void>;
-  signOut(): void;
+  signIn(credentials: ISignInCredentials): Promise<void>
+  signUp(credentials: ISignUpCredentials): Promise<void>
+  signOut(): void
 }
