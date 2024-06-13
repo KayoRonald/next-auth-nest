@@ -1,4 +1,9 @@
-import { Injectable, OnModuleInit, OnModuleDestroy, INestApplication } from '@nestjs/common';
+import {
+  Injectable,
+  OnModuleInit,
+  INestApplication,
+  Logger,
+} from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
@@ -11,9 +16,29 @@ export class PrismaService
   implements OnModuleInit
 {
   private static instance: PrismaService;
+  private readonly logger = new Logger(PrismaService.name);
 
   constructor() {
-    super();
+    super({
+      log: [
+        {
+          emit: 'event',
+          level: 'query',
+        },
+        {
+          emit: 'event',
+          level: 'error',
+        },
+        {
+          emit: 'event',
+          level: 'info',
+        },
+        {
+          emit: 'event',
+          level: 'warn',
+        },
+      ],
+    });
   }
 
   static getInstance(): PrismaService {
@@ -44,10 +69,20 @@ export class PrismaService
       }
       return next(params);
     });
+    this.$on('error', ({ message }) => {
+      this.logger.error(message);
+    });
+    this.$on('warn', ({ message }) => {
+      this.logger.warn(message);
+    });
+    this.$on('info', ({ message }) => {
+      this.logger.debug(message);
+    });
+    this.$on('query', ({ query, params }) => {
+      this.logger.log(`${query}; ${params}`);
+    });
   }
-  // async onModuleDestroy() {
-  //   await this.$disconnect();
-  // }
+
   async enableShutdownHooks(app: INestApplication) {
     this.$on('beforeExit', async () => {
       await app.close();
