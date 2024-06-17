@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -23,6 +24,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
+  private logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
   @Get()
   @ApiResponse({
@@ -84,6 +86,7 @@ export class UserController {
   ): Promise<UserEntity> {
     const user = await this.userService.findOne(id);
     if (!user) {
+      this.logger.error(`Failed update user`);
       throw new NotFoundException('User not found');
     }
     const updatedUser = await this.userService.update(id, data);

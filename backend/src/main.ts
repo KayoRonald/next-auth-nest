@@ -8,18 +8,22 @@ import { validationPipe } from './config/validation.pipe';
 
 async function bootstrap() {
   const logger = new Logger('Main');
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
   const config = app.get<ConfigService>(ConfigService);
   const port = config.get<number>('port');
+  //Docs swagger
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(validationPipe);
+  app.useGlobalGuards();
+  app.enableCors({
+    origin: '*',
+  });
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   await app.listen(port, () => {
-    logger.log(`Server listening port: ${port}`);
+    logger.log(`🚀 Application is running on: http://localhost:${port}`);
   });
 }
 bootstrap();
