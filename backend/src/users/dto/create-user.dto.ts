@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { AccessLevel } from '@prisma/client';
 import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
@@ -17,6 +18,14 @@ export class CreateUserDto {
     example: 'John Doe',
   })
   username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'The username of the user.',
+    example: 'Admin',
+  })
+  accessLevel: AccessLevel;
 
   @IsString()
   @IsNotEmpty()
