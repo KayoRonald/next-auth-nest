@@ -1,21 +1,15 @@
 import Head from 'next/head'
-import {
-  Button,
-  Checkbox,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  useToast
-} from '@chakra-ui/react'
+import { Button, Checkbox, Flex, Stack, Text, useToast } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { useForm } from 'react-hook-form'
-import { PasswordField } from '@/component/PassworldField'
+import Link from 'next/link'
+import { MdEmail } from 'react-icons/md'
+import { PasswordField } from '@/component/form/passworld-field'
 import useAuth from '@/hooks/useAuth'
 import { Card } from '@/component/form/card'
 import { ISignInCredentials } from '@/types'
+import { InputField } from '@/component/form/input-field'
 
 export default function Login() {
   const { register, handleSubmit } = useForm<ISignInCredentials>()
@@ -45,7 +39,7 @@ export default function Login() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Flex w="100%" h="100vh">
+      <Flex w="100%" h="100vh" transition="0.5s ease-out">
         <Card />
         <Flex w="100%" align="center" justify="center" direction="column" h="100%" p="1rem">
           <Flex
@@ -60,19 +54,13 @@ export default function Login() {
             <Text fontWeight={700} fontSize="1.5rem" lineHeight="36px">
               Log in
             </Text>
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <Input
-                focusBorderColor="purple.700"
-                borderColor="#7180963e"
-                {...register('email')}
-                type="email"
-                placeholder="E-mail"
-                _placeholder={{ color: '#718096' }}
-                autoFocus
-              />
-            </FormControl>
-
+            <InputField
+              {...register('email')}
+              type="email"
+              icon={MdEmail}
+              placeholder="E-mail"
+              autoFocus
+            />
             <PasswordField
               focusBorderColor="purple.700"
               borderColor="#7180963e"
@@ -94,7 +82,11 @@ export default function Login() {
                 Esqueceu sua senha?
               </Text>
             </Flex>
-
+            <Stack>
+              <Text fontSize={'.875rem'}>
+                Não uma conta? <Link href={'/signup'}>Criar conta</Link>
+              </Text>
+            </Stack>
             <Button bg="purple.700" color="white" _hover={{ bg: 'purple.500' }} type="submit">
               Entrar
             </Button>

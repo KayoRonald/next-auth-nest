@@ -1,26 +1,35 @@
 import Head from 'next/head'
-import { Text } from '@chakra-ui/react'
+import { Button, Flex, Stack, Text, useToast } from '@chakra-ui/react'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import { parseCookies } from 'nookies'
-// import { useForm } from 'react-hook-form'
-// import useAuth from '@/hooks/useAuth'
-// import { ISignUpCredentials } from '@/types'
+import { useForm } from 'react-hook-form'
+import { MdEmail } from 'react-icons/md'
+import { Card } from '@/component/form/card'
+import useAuth from '@/hooks/useAuth'
+import { ISignUpCredentials } from '@/types'
+import { PasswordField } from '@/component/form/passworld-field'
+import { InputField } from '@/component/form/input-field'
 
 export default function Signup() {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   formState: { errors }
-  // } = useForm<ISignUpCredentials>()
-  // const { signIn } = useAuth()
-  // async function onSubmitHandler(data: ISignUpCredentials) {
-  //   try {
-  //     await signIn(data)
-  //   } catch (error: any) {
-  //     console.error(error.response?.data)
-  //   }
-  // }
+  const { register, handleSubmit } = useForm<ISignUpCredentials>()
+  const { signUp } = useAuth()
+  const toast = useToast()
+  async function onSubmitHandler(data: ISignUpCredentials) {
+    console.log(data)
+    try {
+      await signUp(data)
+    } catch (error: any) {
+      console.error(error.response?.data)
+      toast({
+        title: 'Não foi possível fazer o login',
+        description: error.response?.data.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      })
+    }
+  }
   return (
     <>
       <Head>
@@ -29,7 +38,53 @@ export default function Signup() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Text>signup</Text>
+      <Flex w="100%" h="100vh" transition="0.5s ease-out">
+        <Card />
+        <Flex w="100%" align="center" justify="center" direction="column" h="100%" p="1rem">
+          <Flex
+            as={'form'}
+            method="POST"
+            onSubmit={handleSubmit(onSubmitHandler)}
+            maxW="350px"
+            w="100%"
+            direction="column"
+            gap="1rem"
+          >
+            <Text fontWeight={700} fontSize="1.5rem" lineHeight="36px">
+              SignUp
+            </Text>
+            <InputField
+              {...register('name')}
+              type="text"
+              icon={MdEmail}
+              placeholder="name"
+              autoFocus
+            />
+            <InputField
+              {...register('username')}
+              type="text"
+              icon={MdEmail}
+              placeholder="username"
+            />
+            <InputField {...register('email')} type="email" icon={MdEmail} placeholder="E-mail" />
+            <PasswordField
+              focusBorderColor="purple.700"
+              borderColor="#7180963e"
+              placeholder="senha"
+              {...register('password')}
+            />
+            <Stack>
+              <Text fontSize={'.875rem'}>
+                Já tem uma conta? <Link href={'/login'}>Entrar</Link>
+              </Text>
+            </Stack>
+
+            <Button bg="purple.700" color="white" _hover={{ bg: 'purple.500' }} type="submit">
+              Entrar
+            </Button>
+          </Flex>
+        </Flex>
+      </Flex>
     </>
   )
 }
