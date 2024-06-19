@@ -28,7 +28,7 @@ async function isRightSessionRole(
   const session = await prismaService.user.findUnique({
     where: { id },
   });
-  console.log(session)
+  console.log(session);
   if (allowed.some((permission) => permission === session.accessLevel)) {
     return true;
   }

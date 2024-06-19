@@ -5,7 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { JwtStrategy } from './jwt.strategy';
-import { jwtOptions } from 'src/config/jwt.constants';
+import { jwtOptions } from 'src/common/config/jwt.constants';
 import { UsersModule } from 'src/users/user.module';
 export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
 
