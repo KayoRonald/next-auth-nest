@@ -7,7 +7,6 @@ import {
   NotFoundException,
   Param,
   Patch,
-  Post,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -19,7 +18,7 @@ import {
 import { UserService } from './user.service';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('user')
 @Controller('user')
@@ -57,17 +56,6 @@ export class UserController {
       throw new NotFoundException('User not found');
     }
     return new UserEntity(user);
-  }
-
-  @Post()
-  @ApiResponse({
-    status: 201,
-    description: 'The created user',
-    type: UserEntity,
-  })
-  async create(@Body() data: CreateUserDto): Promise<UserEntity> {
-    const createdUser = await this.userService.create(data);
-    return new UserEntity(createdUser);
   }
 
   @Patch(':id')

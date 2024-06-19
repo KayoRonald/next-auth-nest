@@ -18,8 +18,8 @@ import {
 import { BookService } from './book.service';
 import { BookEntity } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
-import { AdminRoleGuard } from 'src/auth/guard/admin.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { AdminRoleGuard } from 'src/auth/guards/admin.guard';
 
 @ApiTags('book')
 @Controller('book')
@@ -50,7 +50,6 @@ export class BookController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiUnauthorizedResponse()
-  
   async findOne(@Param('id') id: string): Promise<BookEntity> {
     const book = await this.bookService.findOne(id);
     if (!book) {

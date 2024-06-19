@@ -18,7 +18,7 @@ export function AuthProvider({ children }: LayoutProps) {
   const signIn = ({ email, password }: ISignInCredentials) => {
     const sessionUser = new Promise<void>(async (resolve, reject) => {
       try {
-        const { data } = await api.post('auth/login', {
+        const { data } = await api.post('auth/signn', {
           email,
           password
         })
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: LayoutProps) {
   const signUp = ({ name, username, email, password }: ISignUpCredentials) => {
     const sessionUser = new Promise<void>(async (resolve, reject) => {
       try {
-        await api.post('user', {
+        await api.post('auth/singup', {
           name,
           username,
           email,

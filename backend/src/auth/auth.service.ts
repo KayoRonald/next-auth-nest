@@ -1,5 +1,6 @@
 //src/auth/auth.service.ts
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -8,6 +9,7 @@ import { PrismaService } from './../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthEntity } from './entity/auth.entity';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,5 +36,20 @@ export class AuthService {
         username: user.username,
       }),
     };
+  }
+
+  async create(data: CreateUserDto) {
+    const existingUser = await this.prisma.user.findFirst({
+      where: {
+        OR: [{ username: data.username }, { email: data.email }],
+      },
+    });
+
+    if (existingUser)
+      throw new ConflictException('Username or email already exists');
+
+    return this.prisma.user.create({
+      data,
+    });
   }
 }
